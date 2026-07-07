@@ -7,35 +7,40 @@ compatibility: Requires the `gh` CLI and an authenticated GitHub session.
 
 # Implement a GitHub Issue
 
-This skill wraps the Standard Workflow defined in `references/standard_workflow.md`. Run the steps below before and after that workflow. Refer to `scripts/` for PowerShell utilities that assist with GitHub operations.
+This skill wraps the Standard Workflow defined in `references/standard_workflow.md`. Run the steps below before and after that workflow. Refer to short scripts in the below for PowerShell actions that assist with GitHub operations.
 
-## Bundled Scripts
-
-| Script | Purpose |
-|--------|---------|
-| `scripts/gh_check_auth.ps1` | Verify `gh` CLI authentication status |
-| `scripts/gh_get_repo_id.ps1` | Extract repository owner/name from git remote |
-
-Use these scripts when you need to verify authentication or retrieve repository information during the implementation process.
 
 ## Before the Standard Workflow
 
 **A. Verify authentication:**
 
-Run `scripts/gh_check_auth.ps1` or manually execute:
+Manually execute:
 ```powershell
 gh auth status
 ```
 
 If not authenticated, stop and ask the user to authenticate before continuing. If the issue is already closed or has a linked merged PR, stop and inform the user before proceeding. Ask whether to continue anyway.
 
-**B. Read the issue in full:**
+**B. Verify the repo owner/name: **
+
+Manually execute
+```powershell
+$remote = git remote get-url origin
+
+if ($remote -match '[:/]([^/]+)/([^/]+?)(?:\.git)?$') {
+    "$($matches[1])/$($matches[2])"
+}
+```
+
+This provides the repo owner/name. Ensure that this corresponds to the working directory and all actions moving forward.
+
+**C. Read the issue in full:**
 
 ```bash
 gh issue view {number}
 ```
 
-**C. Check/create the branch:**
+**CD Check/create the branch:**
 
 - If on `main`: use `usethis::pr_init("fix-{number}-{description}")` or fall back to `git checkout -b fix-{number}-{description}`
 - If currently on a branch that is not `main` and does not match `fix-{number}-*`, stop and ask the user whether to switch to `main` and create a new branch or continue on the current branch.
@@ -45,7 +50,7 @@ gh issue view {number}
 
 ## Run the Standard Workflow from `references/standard_workflow.md`
 
-Steps 1–9 represent the core development loop. During implementation:
+Steps 1–4 represent the core development loop. During implementation:
 
 1. **Plan**: Identify affected source files; check if new exports are needed
 2. **Test first**: Write failing test, then implement; verify with `devtools::test(filter = "name")`
@@ -61,14 +66,14 @@ Steps 1–9 represent the core development loop. During implementation:
 
 ## After the Standard Workflow
 
-**D. Final verification before PR submission:**
+**E. Final verification before PR submission:**
 
 1. Run full test suite: `devtools::test(reporter = "check")`
 2. Verify all commit checks pass (GitHub Actions status)
 3. Confirm code coverage metrics are acceptable
 4. If vignettes or documentation were updated, verify they render correctly
 
-**E. Commit and push:**
+**F. Commit and push:**
 
 1. Review commits already on this branch: `git log main..HEAD --oneline`
 2. Stage and commit all changes:
@@ -78,14 +83,14 @@ Steps 1–9 represent the core development loop. During implementation:
    ```
 3. Push the branch: `git push -u origin HEAD`
 
-**F. Open the PR:**
+**G. Open the PR:**
 
 1. Create PR: `gh pr create --fill`
 2. If auto-filled content is incomplete or omits issue number, use explicit `--title` and `--body`
 3. Verify PR description links to the issue (e.g., "Closes #{number}")
 4. Ensure all required reviewers are added
 
-**G. After status checks pass:**
+**H. After status checks pass:**
 
 1. Review the PR as if performed by an independent agent
 2. If all criteria met, file a review with "Approve" status and comment explaining readiness for merge
