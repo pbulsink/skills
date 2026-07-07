@@ -44,6 +44,16 @@ Files excluded from the coverage requirement:
 - `R/aaa-shared_params.R`
 - Files matching `R/import-standalone-*.R`
 
+## Coverage checklist
+
+After editing `R/{name}.R`, verify coverage with this checklist:
+
+- [ ] Run `devtools::test(reporter = "check")` to confirm all tests pass
+- [ ] Run `covr_res <- devtools:::test_coverage_active_file("R/{name}.R")`
+- [ ] Identify uncovered lines: `which(purrr::map_int(covr_res, "value") == 0)`
+- [ ] Add tests for uncovered code OR add `# nocov start` / `# nocov end` with explanation
+- [ ] Verify exclusions are only for impossible-to-test defensive checks
+
 ## Test types
 
 ### Unit tests

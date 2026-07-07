@@ -40,7 +40,7 @@ This provides the repo owner/name. Ensure that this corresponds to the working d
 gh issue view {number}
 ```
 
-**CD Check/create the branch:**
+**D. Check/create the branch:**
 
 - If on `main`: use `usethis::pr_init("fix-{number}-{description}")` or fall back to `git checkout -b fix-{number}-{description}`
 - If currently on a branch that is not `main` and does not match `fix-{number}-*`, stop and ask the user whether to switch to `main` and create a new branch or continue on the current branch.

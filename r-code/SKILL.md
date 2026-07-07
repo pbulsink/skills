@@ -13,7 +13,6 @@ This skill covers how to design and write R functions — including naming conve
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/format_r.ps1` | Run Air formatter on R files |
 | `scripts/run_r.ps1` | Execute R commands via Rscript |
 
 Use `scripts/run_r.ps1` instead of hardcoding R paths. It automatically locates the installed R version.
