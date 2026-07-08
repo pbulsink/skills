@@ -1,13 +1,10 @@
 ---
 name: skill-creator
+trigger: create new skills or update existing ones
 description: >-
   Guide for creating effective skills. This skill should be used when users want
   to create a new skill (or update an existing skill) that extends Kilo's
   capabilities with specialized knowledge, workflows, or tool integrations.
-metadata:
-  category: development
-  source:
-    repository: 'https://github.com/ComposioHQ/awesome-claude-skills'
 ---
 
 # Skill Creator

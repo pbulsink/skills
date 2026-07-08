@@ -1,25 +1,4 @@
-# GitHub CLI Workflows
-
-## Repository ID Retrieval
-To get the repository owner/name for the current project:
-
-```powershell
-$remote = git remote get-url origin
-
-if ($remote -match '[:/]([^/]+)/([^/]+?)(?:\.git)?$') {
-    "$($matches[1])/$($matches[2])"
-}
-```
-
-## View Resources
-```bash
-gh issue view 123          # View issue #123
-gh pr view 456            # View PR #456
-gh issue list               # List issues
-gh pr list                  # List pull requests
-```
-
-## Commit Message Format
+# Commit Message Format
 
 Use conventional commits with the following format:
 

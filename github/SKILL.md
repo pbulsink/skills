@@ -9,7 +9,7 @@ compatibility: Requires the `gh` CLI and an authenticated GitHub session.
 
 All GitHub operations require:
 1. **Authentication**: Verify with `gh auth status`
-2. **Repository Identification**: Extract owner/name from git remote
+2. **Repository Identification**: Extract owner/name from git remote (see `references/github_metadata.md`)
 
 ## Prerequisites (Always First)
 
@@ -21,15 +21,7 @@ gh auth status
 If not authenticated, instruct the user to run `gh auth login` before proceeding.
 
 ### 2. Repository ID Retrieval
-To get the repository owner/name for the current project:
-
-```powershell
-$remote = git remote get-url origin
-
-if ($remote -match '[:/]([^/]+)/([^/]+?)(?:\.git)?$') {
-    "$($matches[1])/$($matches[2])"
-}
-```
+See `references/github_metadata.md` for commands and issue type IDs.
 
 ## Issue Management
 
@@ -39,13 +31,7 @@ if ($remote -match '[:/]([^/]+)/([^/]+?)(?:\.git)?$') {
 Retrieve the repository node ID from `references/github_metadata.md` using the command above.
 
 #### Select Issue Type and Title
-Choose the most appropriate issue type based on the request. Use conventional commit prefixes for titles (e.g., `feat:`, `fix:`, `docs:`, `chore:`).
-
-| Type | ID | Recommended Prefix |
-|---|---|---|
-| Feature | `IT_kwDOAB1wHM4AA6lY` | `feat:` |
-| Bug | `IT_kwDOAB1wHM4AA6lV` | `fix:` |
-| Task | `IT_kwDOAB1wHM4AA6lT` | `chore:` |
+Choose the most appropriate issue type based on the request. Use conventional commit prefixes for titles (e.g., `feat:`, `fix:`, `docs:`, `chore:`). See `references/github_metadata.md` for type IDs.
 
 #### Construct Issue Body
 Build a Markdown body file containing:

@@ -4,38 +4,50 @@ This document provides PowerShell examples for working with R. For most tasks, p
 
 ## Running R Code
 
-To execute arbitrary R code:
+To execute arbitrary R code, use the bundled script:
 
 ```powershell
-& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" -e "[code to call]"
+& "$PSScriptRoot/../../scripts/run_r.ps1" -e "[code to call]"
 ```
 
-**Note**: The `scripts/run_r.ps1` script in the r-code skill automatically locates installed R versions and is preferred over hardcoding paths.
+This automatically locates the installed R version and is preferred over hardcoding paths.
+
+### Direct Rscript (fallback)
+
+If the bundled script is unavailable, locate R dynamically:
+
+```powershell
+$rPaths = @(
+    "C:\Program Files\R\R-4*\bin\Rscript.exe"
+)
+$rScript = Get-ChildItem $rPaths -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($rScript) { & $rScript.FullName -e "[code to call]" }
+```
 
 ## Common Tasks
 
 ### Test Package
 ```powershell
-& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" -e "devtools::test()"
+& "$PSScriptRoot/../../scripts/run_r.ps1" -e "devtools::test()"
 ```
 
 ### Document Package
 ```powershell
-& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" -e "devtools::document()"
+& "$PSScriptRoot/../../scripts/run_r.ps1" -e "devtools::document()"
 ```
 
 ### Run R CMD Check
 ```powershell
-& "C:\Program Files\R\R-4.5.2\bin\Rscript.exe" -e "devtools::check()"
+& "$PSScriptRoot/../../scripts/run_r.ps1" -e "devtools::check()"
 ```
 
 ## Formatting with Air
 
 ```powershell
-& 'C:\Users\pbulsink\.local\bin\air.exe' format .
+& 'air' format .
 ```
 
 For a specific file:
 ```powershell
-& 'C:\Users\pbulsink\.local\bin\air.exe' format path\to\file.R
+& 'air' format path\to\file.R
 ```
