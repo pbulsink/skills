@@ -1,8 +1,8 @@
 ---
 name: github
-trigger: use GitHub CLI for repository operations
-description: This skill should be used when interacting with GitHub repositories via the gh CLI, including authentication verification, repository identification, issue management (creation, viewing, commenting, implementing), pull request creation and review, and merge operations. Requires the gh CLI and an authenticated GitHub session.
-compatibility: Requires the `gh` CLI and an authenticated GitHub session.
+trigger: use GitHub or git tools for repository operations
+description: This skill should be used when interacting with GitHub repositories via the gh CLI (remote actions like issue/PR management) and standard git CLI (local actions like status checks, staging files, committing history). Includes safe commit patterns to prevent corruption during simultaneous agent work. Requires git and an authenticated gh session for remote operations.
+compatibility: Requires `git` for local repository operations and the `gh` CLI for authentication verification, issue/PR management.
 ---
 
 # GitHub CLI Workflows
@@ -103,9 +103,23 @@ When implementing a specific GitHub issue:
    - Use `document` skill when new exports require documentation
    - Use `vignette` skill when user-facing workflows need vignettes
 5. **Verify implementation**:
-   - Run tests: `devtools::test()`
-   - All commit checks must pass before PR submission
-6. **Commit and push changes**
+    - Run tests: `devtools::test()`
+    - All commit checks must pass before PR submission
+6. **Commit and push changes** — follow an **edit → stage loop**, never `git add -A`:
+
+    After each file change, stage it immediately:
+    ```bash
+    git status --short                              # Confirm only your files changed
+    git diff --name-only                            # Verify the staged path matches
+    git add R/foo.R                                 # Stage the specific file you edited
+    ```
+
+    **Why this pattern**: `git add -A` stages everything in the working tree, including files modified by other concurrent agents. The edit→stage loop ensures commits contain only your changes and never corrupt another agent's work. Commit when all planned edits are staged:
+
+    ```bash
+    git commit -m "fix: resolve issue with foo (#42)"
+    git push -u origin HEAD
+    ```
 
 #### Create the Pull Request
 

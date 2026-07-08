@@ -1,8 +1,8 @@
 ---
 name: implement-issue
 trigger: implement GitHub issue
-description: This skill should be used when asked to implement, work on, or fix a specific GitHub issue number. Wraps the standard development workflow with GitHub-specific setup (issue reading, branch creation) and completion steps (commit, push, PR creation).
-compatibility: Requires the `gh` CLI and an authenticated GitHub session.
+description: This skill should be used when asked to implement, work on, or fix a specific GitHub issue number. Wraps the standard development workflow with GitHub-specific setup (issue reading, branch creation) and completion steps (commit, push, PR creation). Uses standard git CLI for local operations and gh CLI for remote actions.
+compatibility: Requires `git` for local repository operations and the `gh` CLI for authentication verification and issue/PR management.
 ---
 
 # Implement a GitHub Issue
@@ -73,15 +73,23 @@ Steps 1–4 represent the core development loop. During implementation:
 3. Confirm code coverage metrics are acceptable
 4. If vignettes or documentation were updated, verify they render correctly
 
-**F. Commit and push:**
+**F. Commit and push:** — follow an **edit → stage loop**, never `git add -A`:
 
-1. Review commits already on this branch: `git log main..HEAD --oneline`
-2. Stage and commit all changes:
-   ```bash
-   git add -A
-   git commit -m "{short imperative summary}"
-   ```
-3. Push the branch: `git push -u origin HEAD`
+    Throughout implementation, after each file change, stage it immediately:
+    ```bash
+    git status --short                              # Confirm only your files changed
+    git diff --name-only                            # Verify the staged path matches
+    git add R/foo.R tests/testthat/test-foo.R       # Stage the specific file you edited
+    ```
+
+    This ensures commits contain only your changes and never corrupt another agent's work. When all planned edits are staged:
+
+    1. Review commits already on this branch: `git log main..HEAD --oneline`
+    2. Commit your changes:
+       ```bash
+       git commit -m "{short imperative summary}"
+       ```
+    3. Push the branch: `git push -u origin HEAD`
 
 **G. Open the PR:**
 

@@ -24,7 +24,11 @@ Kilo skills extend the agent's capabilities with specialized knowledge, workflow
 
 | Skill | Trigger | Description |
 |---|---|---|
-| [skill-creator](skill-creator/SKILL.md) | *(manual)* | Guide for creating or updating skills. Extends Kilo's capabilities with new knowledge, workflows, or tool integrations. |
+| [skill-creator](skill-creator/SKILL.md) | `create or update skill` | Guide for creating or updating skills. Extends Kilo's capabilities with new knowledge, workflows, or tool integrations. |
+
+## Agent Guidelines
+
+This repository includes a generic [AGENTS.md](AGENTS.md) file with general behavioral guidelines for Kilo sessions. Copy it to the root of your project and customize it with project-specific rules, conventions, and preferences. A project may also use `CLAUDE.md`, `KILO.md`, or other AGENTS.md-style files — ask users to produce a tailored version if one does not already exist.
 
 ## How Skills Work
 
