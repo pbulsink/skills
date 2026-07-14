@@ -21,6 +21,13 @@ Use `scripts/run_r.ps1` instead of hardcoding R paths. It automatically locates 
 
 - `references/powershell_commands.md` - PowerShell examples for running R (use bundled scripts when possible)
 - `references/error_classes.md` - Package-specific error classes
+- `references/linting.md` - Using `lintr` for code quality checks and `.lintr` configuration
+
+## Templates
+
+| File | Purpose |
+|------|---------|
+| `templates/.lintr` | Default linting rules — share only if the repository has no existing `.lintr` file |
 
 ## Naming conventions
 
@@ -65,9 +72,13 @@ fetch_records(fp, ps, ow)
 
 ## Coding style
 
-- Always run `air format .` after generating code.
+- Always run `air format .` after generating code, then run lint checks to catch any remaining issues.
 - Use the base pipe operator (`|>`) not the magrittr pipe (`%>%`).
 - Use `\() ...` for single-line anonymous functions. For all other cases, use `function() {...}`.
+
+## Linting
+
+Enforce code quality with `lintr`. Run lint checks after formatting with `air`. Address all violations before finalizing changes. See `references/linting.md` for full details on usage and `.lintr` configuration. If the repository has no `.lintr` file, share the template from `templates/.lintr` — never overwrite an existing `.lintr`.
 
 ## Function design
 
