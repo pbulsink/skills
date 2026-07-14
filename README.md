@@ -12,6 +12,7 @@ Kilo skills extend the agent's capabilities with specialized knowledge, workflow
 | [document](document/SKILL.md) | `document functions` | Roxygen2 documentation for R package functions. Requires R + devtools. |
 | [tdd-workflow](tdd-workflow/SKILL.md) | `write or review tests` | Test-driven development with testthat. Covers TDD workflow, test organization, coverage targets, and common patterns. Requires R + testthat. |
 | [vignette](vignette/SKILL.md) | `create vignettes` | Workflow-focused package vignettes for users familiar with R but new to the package. Requires R + usethis. |
+| [generate-agents-md](generate-agents-md/SKILL.md) | `generate AGENTS.md` | Generate a project-specific AGENTS.md by analyzing an R package's DESCRIPTION, directory structure, and R/*.R roxygen docs. Produces structured documentation with Standard Workflow emphasis. Requires no external tools — pure file analysis. |
 
 ### GitHub Operations
 
@@ -28,7 +29,7 @@ Kilo skills extend the agent's capabilities with specialized knowledge, workflow
 
 ## Agent Guidelines
 
-This repository includes a generic [AGENTS.md](AGENTS.md) file with general behavioral guidelines for Kilo sessions. Copy it to the root of your project and customize it with project-specific rules, conventions, and preferences. A project may also use `CLAUDE.md`, `KILO.md`, or other AGENTS.md-style files — ask users to produce a tailored version if one does not already exist.
+This repository includes a generic [AGENTS.md](AGENTS.md) file with general behavioral guidelines for Kilo sessions. Copy it to the root of your project and customize it with project-specific rules, conventions, and preferences.
 
 ## How Skills Work
 
