@@ -4,7 +4,7 @@ Enforce code quality in R projects using the `lintr` package.
 
 ## Setup
 
-Create a `.lintr` file at the project root (the directory containing `DESCRIPTION`) before running any lint checks. A template `.lintr` file is available as part of this skill — use it only if the repository does not already have a `.lintr` file. Never overwrite an existing `.lintr`.
+Create a `.lintr` file at the project root (the directory containing `DESCRIPTION`) before running any lint checks. A template `.lintr` file is available as part of this skill — use it only if the repository does not already have a `.lintr` file. Never overwrite an existing `.lintr`. If adding to the package, append ^\.lintr$ to .Rbuildignore if it's not already there.
 
 ## Usage
 
