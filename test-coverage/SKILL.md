@@ -1,5 +1,5 @@
 ---
-name: evaluating-r-test-coverage
+name: test-coverage
 description: Measures R package test coverage using covr, exports standard Cobertura XML format, and identifies untested lines or low-coverage functions.
 tools:
   - execute_bash
