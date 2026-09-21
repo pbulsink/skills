@@ -1,0 +1,16 @@
+[project]
+name = "mcp-png-compress"
+version = "0.1.0"
+description = "MCP server for lossless in-place PNG compression via ImageMagick (magick.exe)"
+requires-python = ">=3.10"
+dependencies = ["mcp", "python-dotenv"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[project.scripts]
+png-compress-mcp = "server:main"

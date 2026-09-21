@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "png-compress": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "C:/Users/pbulsink/Documents/skills/mcp-png-compress",
+        "run",
+        "python",
+        "server.py"
+      ]
+    }
+  }
+}
