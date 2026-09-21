@@ -37,6 +37,8 @@ covr_res <- devtools:::test_coverage_active_file("R/{name}.R")
 which(purrr::map_int(covr_res, "value") == 0)
 ```
 
+Alternatively refer to the available skill `test-coverage` for more testing coverage instructions.
+
 If a specific line or branch cannot be covered without unreasonable test contortion (e.g., a defensive check against an impossible internal state), add a `# nocov start` / `# nocov end` comment pair around those lines and leave a comment explaining why coverage is excluded. Do not write tests purely to hit a coverage number.
 
 Files excluded from the coverage requirement:

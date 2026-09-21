@@ -7,7 +7,7 @@ compatibility: Requires R and the `devtools` package for testing, `air` formatte
 
 # R code
 
-This skill covers how to design and write R functions — including naming conventions, signatures, API conventions, input validation, error handling, and common pitfalls. For documenting functions, use the `document` skill. For tests, use the `tdd-workflow` skill. Once satisfied with the function of the code (see the `tdd-workflow` skill), verify that the code passes R CMD Check without errors, warnings, or notes. Address any issues before finalizing the code. If an R CMD Check note or warning cannot be resolved without changes outside the scope of the current task (e.g., it originates from a dependency or existing code), document it explicitly and flag it for developer review rather than suppressing it silently.
+This skill covers how to design and write R functions — including naming conventions, signatures, API conventions, input validation, error handling, and common pitfalls. For documenting functions, use the `document` skill. For tests, use the `tdd-workflow` skill, ensuring coverage is as complete as possible using the `test-coverage` skill. Once satisfied with the function of the code (see the `tdd-workflow` skill), verify that the code passes R CMD Check without errors, warnings, or notes. Address any issues before finalizing the code. If an R CMD Check note or warning cannot be resolved without changes outside the scope of the current task (e.g., it originates from a dependency or existing code), document it explicitly and flag it for developer review rather than suppressing it silently.
 
 ## Bundled Scripts
 
@@ -215,6 +215,8 @@ Internal helpers use a dot prefix (e.g. `.parse_response()`).
 Always provide informative error messages with `cli::cli_abort()`.
 
 Include the name of the calling function (using `{.fn func_name}`) and a description of why the input is invalid in every `cli::cli_abort()` message. Example: `cli::cli_abort("{.fn fetch_records}: {.arg page_size} must be a positive integer, not {.val {page_size}}.")`.
+
+Any code lines must contain only ASCII characters - if writing messages (especially in french) to users be sure to properly escape any non-ASCII characters (e.g. `\u00e9` for `é`) to avoid R CMD Check notes. A table of escaped characters is available in the reference folder of this skill.
 
 ## Common package mistakes
 
