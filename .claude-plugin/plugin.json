@@ -1,0 +1,12 @@
+{
+  "name": "skills",
+  "description": "A collection of agent skills for R package development, GitHub workflows, code and plan review, and skill authoring.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Philip Bulsink"
+  },
+  "homepage": "https://github.com/pbulsink/skills",
+  "repository": "https://github.com/pbulsink/skills",
+  "license": "MIT",
+  "skills": "."
+}
