@@ -8,13 +8,19 @@ Create a `.lintr` file at the project root (the directory containing `DESCRIPTIO
 
 ## Usage
 
-| Scope | Function | How to run |
-|-------|----------|------------|
-| Single file | `lintr::lint()` | `Rscript -e "lintr::lint('R/fetch_records.R')"` |
-| Entire directory | `lintr::lint_dir()` | `Rscript -e "lintr::lint_dir('R/')"` |
-| Whole project/package | `lintr::lint_package()` | `Rscript -e "lintr::lint_package()"` |
+Run lint checks **in Posit Assistant's live R session first** — use its built-in R tool to execute the call in your active console, then read the returned lints. This reuses installed packages and shows exactly what ran.
 
-Use the bundled `scripts/run_r.ps1` script to execute R commands:
+| Scope | Call |
+|-------|------|
+| Single file | `lintr::lint('R/fetch_records.R')` |
+| Entire directory | `lintr::lint_dir('R/')` |
+| Whole project/package | `lintr::lint_package()` |
+
+**Terminal fallback only when no live session is available.** If you must run via the command line (e.g. outside Positron/RStudio), use `Rscript -e "..."`, or on Windows the bundled `scripts/run_r.ps1`:
+
+```bash
+Rscript -e "lintr::lint('R/fetch_records.R')"
+```
 
 ```powershell
 .\scripts\run_r.ps1 -e "lintr::lint('R/fetch_records.R')"

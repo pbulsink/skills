@@ -16,15 +16,19 @@ Use this skill to evaluate code coverage for R packages. It executes `covr::pack
 
 ### 1. Execute Coverage Analysis
 
-Run the following R command from the package root directory using an isolated R process:
+Run the following R code from the package root directory:
+
+```r
+suppressPackageStartupMessages(library(covr));
+cov <- package_coverage();
+to_cobertura(cov, filename = "coverage.xml");
+cat(sprintf("Overall Coverage: %.2f%%\n", percent_coverage(cov)))
+```
+
+**How to run it:** Prefer Posit Assistant's live R session (its built-in R tool) so it reuses your active console. **Coverage is the one exception where a fresh, isolated process is often preferable** — running `package_coverage()` in a clean R process avoids stale loaded objects skewing results. So if you are outside Positron/RStudio, or want an isolated run, fall back to the terminal:
 
 ```bash
-Rscript -e '
-  suppressPackageStartupMessages(library(covr));
-  cov <- package_coverage();
-  to_cobertura(cov, filename = "coverage.xml");
-  cat(sprintf("Overall Coverage: %.2f%%\n", percent_coverage(cov)))
-'
+Rscript -e 'covr::to_cobertura(covr::package_coverage(), filename = "coverage.xml")'
 ```
 
 > **Note:** For large packages or slow test suites, run `covr::file_coverage()` on modified source files rather than full package coverage during quick iterative loops.

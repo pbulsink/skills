@@ -1,16 +1,14 @@
-# PowerShell Commands for R
+# Running R Code — Terminal/PowerShell Fallback
 
-This document provides PowerShell examples for working with R. For most tasks, prefer using the bundled scripts in `r-code` skill instead.
+> **Prefer the live session first.** Posit Assistant has built-in access to your active R/Python console. Run code in that live session using its built-in R tool before reaching for any terminal command. This document is only for when no live session is available (e.g. running outside Positron/RStudio, or a task that needs a fresh isolated process).
 
-## Running R Code
-
-To execute arbitrary R code, use the bundled script:
+When you do need the terminal route, prefer the bundled script over hardcoding paths:
 
 ```powershell
 & "$PSScriptRoot/../../scripts/run_r.ps1" -e "[code to call]"
 ```
 
-This automatically locates the installed R version and is preferred over hardcoding paths.
+This automatically locates the installed R version.
 
 ### Direct Rscript (fallback)
 
@@ -23,6 +21,8 @@ $rPaths = @(
 $rScript = Get-ChildItem $rPaths -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($rScript) { & $rScript.FullName -e "[code to call]" }
 ```
+
+On macOS/Linux the equivalent is simply `Rscript -e "[code to call]"`.
 
 ## Common Tasks
 

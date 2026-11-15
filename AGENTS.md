@@ -25,6 +25,7 @@ If no relevant skill is triggered, apply these general guidelines directly witho
 
 - Always use `read` before `edit`. Never edit a file you haven't loaded first.
 - Use built-in tools (`read`, `write`, `bash`, `glob`, `grep`) in preference to MCP servers. Only use MCP tools when built-in tools and scripting cannot accomplish the task.
+- **Prefer the live session for R/Python code.** When running R or Python (tests, docs, linting, coverage, analysis), execute it in Posit Assistant's active console via its built-in runtime integration before falling back to a terminal command (`Rscript -e`, `python3 -c`). A fresh subprocess is only appropriate when no live session exists, when isolation is genuinely required (e.g. `covr` full-package coverage, screenshot capture driving an app), or when running outside Positron/RStudio.
 - Retry failed operations up to **3 times** before stopping. A simple retry or slight modification may succeed. If all 3 attempts fail, try one more time with a fundamentally different approach. If that fails too, stop and report the error, explain your reasoning about why it's happening, and ask for advice on how to proceed.
 
 ## Communication

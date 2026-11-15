@@ -19,10 +19,14 @@ Implement Roxygen2 documentation following these procedural standards.
     ```bash
     air format .
     ```
-6.  **Regenerate Docs**: generate automatic Roxygen files by calling `devtools::document` after edits and formatting. 
-``` bash
-Rscript -e "devtools::document(roclets = c('rd', 'collate', 'namespace')"
-```
+6.  **Regenerate Docs**: generate automatic Roxygen files by calling `devtools::document()` after edits and formatting. **Run it in Posit Assistant's live R session** (its built-in R tool) so it reuses your active console — fall back to the terminal only when no live session is available:
+    ```r
+    devtools::document(roclets = c('rd', 'collate', 'namespace'))
+    ```
+    Terminal fallback:
+    ```bash
+    Rscript -e "devtools::document(roclets = c('rd', 'collate', 'namespace'))"
+    ```
 
 ## Exported vs. Internal Functions
 
