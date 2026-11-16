@@ -194,7 +194,7 @@ expect_false(x)
 ```
 
 ## `withr` patterns for temporary state
-
+Any state modification *must* use withr::local_* patterns, as below, as to not affect user settings, environment, or persist files.
 ```r
 withr::local_options(list(PlotFTIR.verbose = TRUE))
 withr::local_envvar(MY_VAR = "value")
