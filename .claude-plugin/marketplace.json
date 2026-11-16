@@ -1,0 +1,16 @@
+{
+  "name": "skills",
+  "description": "Agent skills for R package development, GitHub workflows, code and plan review, and skill authoring.",
+  "version": "1.0.0",
+  "owner": {
+    "name": "Philip Bulsink"
+  },
+  "plugins": [
+    {
+      "name": "skills",
+      "source": "./",
+      "description": "A collection of agent skills for R package development, GitHub workflows, code and plan review, and skill authoring.",
+      "version": "1.0.0"
+    }
+  ]
+}

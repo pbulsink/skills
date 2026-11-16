@@ -2,24 +2,27 @@
 name: r-code
 trigger: write R functions
 description: This skill should be used when writing new R functions, designing APIs, or reviewing/modifying existing R code. Covers naming conventions, function design patterns, input validation, error handling, and common pitfalls.
-compatibility: Requires R and the `devtools` package for testing, `air` formatter for code formatting, PowerShell for script execution.
+compatibility: Requires R and the `devtools` package for testing, `air` formatter for code formatting. Prefer Posit Assistant's live R/Python session to run code; fall back to PowerShell/Rscript only when no live session is available.
 ---
 
 # R code
 
 This skill covers how to design and write R functions — including naming conventions, signatures, API conventions, input validation, error handling, and common pitfalls. For documenting functions, use the `document` skill. For tests, use the `tdd-workflow` skill, ensuring coverage is as complete as possible using the `test-coverage` skill. Once satisfied with the function of the code (see the `tdd-workflow` skill), verify that the code passes R CMD Check without errors, warnings, or notes. Address any issues before finalizing the code. If an R CMD Check note or warning cannot be resolved without changes outside the scope of the current task (e.g., it originates from a dependency or existing code), document it explicitly and flag it for developer review rather than suppressing it silently.
 
-## Bundled Scripts
+## Running R code
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/run_r.ps1` | Execute R commands via Rscript |
+When you need to execute R code (tests, documentation, linting, coverage, etc.), **prefer Posit Assistant's live R/Python session** over spawning a new terminal process. Posit Assistant is built into Positron and RStudio with out-of-the-box access to your active console — it can run code in that session directly and see the objects you already have loaded.
 
-Use `scripts/run_r.ps1` instead of hardcoding R paths. It automatically locates the installed R version.
+1. **First choice: run in the live session.** Use Posit Assistant's built-in runtime integration (its R/Python tools, e.g. `run_r_code` / `execute_python`) to execute the code in your active console. This reuses installed packages and any objects already in scope, shows the exact code being run, and avoids writing throwaway scripts.
+2. **Fallback: terminal only when no live session is available.** If there is no active R/Python session (e.g. you are running outside Positron/RStudio, or a tool call that needs a fresh isolated process), fall back to the command line — `Rscript -e "..."`, or the bundled `scripts/run_r.ps1` on Windows.
+
+Do not hardcode absolute R paths in terminal fallbacks; locate R dynamically (see `references/powershell_commands.md`).
+
+> **Note:** Some tasks intrinsically require a *separate* R process — for example, screenshot capture (`app-screenshot`) drives an app via `shinytest2::AppDriver`, which must launch its own fresh R process. Use the terminal/subprocess route for those; do not run them in your interactive session.
 
 ## Reference Material
 
-- `references/powershell_commands.md` - PowerShell examples for running R (use bundled scripts when possible)
+- `references/powershell_commands.md` - Terminal/PowerShell fallback commands for running R (only when no live session is available)
 - `references/error_classes.md` - Package-specific error classes
 - `references/linting.md` - Using `lintr` for code quality checks and `.lintr` configuration
 

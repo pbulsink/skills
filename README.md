@@ -13,6 +13,7 @@ Kilo skills extend the agent's capabilities with specialized knowledge, workflow
 | [tdd-workflow](tdd-workflow/SKILL.md) | `write or review tests` | Test-driven development with testthat. Covers TDD workflow, test organization, coverage targets, and common patterns. Requires R + testthat. |
 | [vignette](vignette/SKILL.md) | `create vignettes` | Workflow-focused package vignettes for users familiar with R but new to the package. Requires R + usethis. |
 | [generate-agents-md](generate-agents-md/SKILL.md) | `generate AGENTS.md` | Generate a project-specific AGENTS.md by analyzing an R package's DESCRIPTION, directory structure, and R/*.R roxygen docs. Produces structured documentation with Standard Workflow emphasis. Requires no external tools — pure file analysis. |
+| [app-screenshot](app-screenshot/SKILL.md) | `capture Shiny app screenshots` | Capture deterministic screenshots of a running R Shiny app for vignettes, READMEs, and app tours using shinytest2's AppDriver. Produces numbered PNGs ready to embed. Requires R + shinytest2, chromote, webshot2 (dev-only). |
 
 ### GitHub Operations
 
@@ -26,6 +27,7 @@ Kilo skills extend the agent's capabilities with specialized knowledge, workflow
 | Skill | Trigger | Description |
 |---|---|---|
 | [skill-creator](skill-creator/SKILL.md) | `create or update skill` | Guide for creating or updating skills. Extends Kilo's capabilities with new knowledge, workflows, or tool integrations. |
+| [maintain-plugin](maintain-plugin/SKILL.md) | `add a skill to the plugin` | Keeps `.claude-plugin/marketplace.json` and this README in sync as skills are added or removed from the repository. |
 
 ## Agent Guidelines
 
@@ -49,4 +51,41 @@ Kilo matches user requests to skills using the `trigger` field in front-matter. 
 2. Add `SKILL.md` with YAML front-matter (`name`, `trigger`, `description`) followed by instructions.
 3. Optionally add `references/` for supporting files and `scripts/` for executables.
 
-See the [skill-creator](skill-creator/SKILL.md) skill for detailed guidance on designing effective skills.
+See the [skill-creator](skill-creator/SKILL.md) skill for detailed guidance on designing effective skills, and the [maintain-plugin](maintain-plugin/SKILL.md) skill to register the new skill in the plugin manifest and this README.
+
+## Installing This Plugin
+
+This repository is packaged as a single Claude Code plugin named `skills`. Every top-level `<name>/SKILL.md` folder is one skill, so all of the skills above load together. The manifest lives at [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json) and the marketplace catalog at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json).
+
+### From this repository (marketplace)
+
+Register the repo as a marketplace, then install the plugin:
+
+```bash
+# Add this GitHub repo as a marketplace named "skills"
+/plugin marketplace add pbulsink/skills
+
+# Install the plugin (installs all bundled skills at once)
+/plugin install skills@skills
+```
+
+After installing, each skill is available with the `skills:` prefix, e.g. `/skills:r-code`, `/skills:github`, `/skills:tdd-workflow`.
+
+### For a single session (no install)
+
+Point Claude Code at this repo's root to load the plugin for one session:
+
+```bash
+cd <path-to-this-repo>
+claude --plugin-dir .
+```
+
+### Validate locally
+
+If you have the `claude` CLI installed, check the manifest and marketplace from the repo root:
+
+```bash
+claude plugin validate .
+```
+
+> **Note:** Adding a new skill only requires creating its `<name>/SKILL.md` folder — Claude Code discovers it automatically. Then run the [maintain-plugin](maintain-plugin/SKILL.md) workflow to keep `marketplace.json` and this README up to date.
