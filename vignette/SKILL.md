@@ -2,7 +2,9 @@
 name: vignette
 trigger: create vignettes
 description: This skill should be used when creating or updating package vignettes. Vignettes are workflow-focused guides for users familiar with R but new to the package.
-compatibility: Requires R and the `usethis` package.
+compatibility: Requires R with `usethis` and `knitr`; optionally
+  `xfun` (figure compression) and `devtools` (verification builds) for
+  precompiled vignettes.
 ---
 
 ## Package vignettes
@@ -66,11 +68,40 @@ Prefer:
 3. Datasets from imported/suggested packages
 4. Synthetic data
 
-Avoid internet access when possible.
+Avoid internet access when possible. When a workflow genuinely requires
+internet access or long-running computation, use the precompiled-vignette
+pattern below instead of removing the example.
 
 Prefer plots over tables.
 
 Mention internal functions only when essential.
+
+### Precompiling network- or long-running vignettes
+
+When a vignette needs internet access or long-running computation, keep the
+documentation engine (and CRAN checks) away from that code using a two-file
+pattern:
+
+- Author in `vignettes/<name>.Rmd.orig` — the source of truth with live chunks.
+- Compile it once into `vignettes/<name>.Rmd`, a static twin with inert code
+  fences, inlined outputs, and committed PNG figures. The documentation engine
+  only ever builds the twin; `.orig` files are never built by R.
+
+Workflow:
+1. Write the `.orig` file per the content rules above; its setup chunk must set
+   `fig.path = "<name>-"` (equal to the vignette base name).
+2. Copy `scripts/precompile_vignettes.R` from this skill into the package's
+   `vignettes/` directory, then run from the package root:
+   `Rscript vignettes/precompile_vignettes.R --build`
+3. Review the generated twin and figures; re-run after any `.orig` edit.
+4. Commit the `.orig`, the twin `.Rmd`, and all PNGs together; keep
+   `vignettes/.gitignore` containing `*.html` and `*.R`.
+5. Validate with `scripts/check_precompiled_vignettes.R` (exits non-zero on
+   missing twins, live chunks in a twin, or broken figure references).
+
+Never hand-edit a compiled `.Rmd` — fix the `.orig` and recompile. See
+`references/precompilation.md` for setup-chunk conventions, determinism tips,
+maintenance rules, and CRAN size considerations.
 
 ### Validation
 
@@ -81,6 +112,9 @@ Verify:
 - First chunk is setup.
 - Chunk names are unique.
 - Vignette builds successfully (creates [vignette_name].html file)
+- For precompiled vignettes: the `.Rmd` twin exists, contains no live chunks,
+  and every figure reference resolves to a committed PNG in `vignettes/`
+  (`scripts/check_precompiled_vignettes.R` automates these checks)
 - Narrative focuses on workflows.
 - Realistic package usage is demonstrated.
 
