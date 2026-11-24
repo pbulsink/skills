@@ -2,15 +2,7 @@
 
 # Try to find R installation
 $rPaths = @(
-    "C:\Program Files\R\R-4.7.0\bin\Rscript.exe"
-    "C:\Program Files\R\R-4.6.3\bin\Rscript.exe"
-    "C:\Program Files\R\R-4.6.2\bin\Rscript.exe"
-	"C:\Program Files\R\R-4.6.1\bin\Rscript.exe"
-    "C:\Program Files\R\R-4.6.0\bin\Rscript.exe"
-    "C:\Program Files\R\R-4.5.3\bin\Rscript.exe"
-    "C:\Program Files\R\R-4.5.2\bin\Rscript.exe"
-    "C:\Program Files\R\R-4.5.1\bin\Rscript.exe"
-    "C:\Program Files\R\R-4.5.0\bin\Rscript.exe"
+    "C:\Program Files\R\R-4.6.1\bin\Rscript.exe"
 )
 
 $rScript = $null

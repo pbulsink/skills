@@ -21,17 +21,23 @@ gh auth status
 If not authenticated, instruct the user to run `gh auth login` before proceeding.
 
 ### 2. Repository ID Retrieval
-See `references/github_metadata.md` for commands and issue type IDs.
+Issue creation via `gh_create_issue.sh` takes the repository's **GraphQL node ID** (base64), *not* `owner/name`. See `references/github_metadata.md` for the lookup command and issue type IDs.
 
 ## Issue Management
 
 ### Create an Issue
 
 #### Determine Repository ID
-Retrieve the repository node ID from `references/github_metadata.md` using the command above.
+Retrieve the repository node ID from `references/github_metadata.md`:
+
+```bash
+gh api graphql -f query='{ repository(owner: "<OWNER>", name: "<REPO>") { id } }' --jq '.data.repository.id'
+```
+
+Passing `<OWNER>/<REPO>` here fails with "Could not resolve to a node with the global id".
 
 #### Select Issue Type and Title
-Choose the most appropriate issue type based on the request. Use conventional commit prefixes for titles (e.g., `feat:`, `fix:`, `docs:`, `chore:`). See `references/github_metadata.md` for type IDs.
+Choose the most appropriate issue type based on the request. Use conventional commit prefixes for titles (e.g., `feat:`, `fix:`, `docs:`, `chore:`). Issue type IDs are **per-repository**, not universal — the table in `references/github_metadata.md` shows example values only. Always verify the target repo's actual IDs with the lookup query there before creating an issue; a mismatch fails with "Issue type cannot be found in this organization".
 
 #### Construct Issue Body
 Build a Markdown body file containing:
@@ -54,10 +60,11 @@ Build a Markdown body file containing:
 
 #### Execute Issue Creation
 ```bash
-./scripts/gh_create_issue.sh <repoId> "<title>" /tmp/issue_body.md <typeId>
+./scripts/gh_create_issue.sh <repoNodeID> "<title>" /tmp/issue_body.md <issueTypeID>
 ```
 
-*Ensure the body content is written to a temporary file first.*
+- `<repoNodeID>`: the repository's GraphQL node ID (base64), from the lookup above.
+- *Ensure the body content is written to a temporary file first.* On Windows, quote absolute paths that contain spaces.
 
 **Reference**: For detailed GraphQL queries and ID lookups, consult `references/github_metadata.md`.
 
